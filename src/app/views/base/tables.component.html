@@ -1,0 +1,165 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>List Of Book
+        </div>
+        <span class="badge badge-success" data-toggle="modal" (click)="successModal.show()" style="cursor:pointer;margin:3px;width:10%;height:30px;padding-top:8px; font-size:13px">
+          Create Data
+        </span>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Date Published</th>
+                <th>Number Of Page</th>
+                <th>Type Of Page</th>
+                <th>Process</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of items  | paginate: { itemsPerPage: 10, currentPage: p }">
+                <td>{{data.id}}</td>
+                <td>{{data.title}}</td>
+                <td>{{data.author}}</td>
+                <td>{{data.date_published}}</td>
+                <td>{{data.number_of_page}}</td>
+                <td>{{data.type_of_page}}</td>
+                <td>
+                  <span class="badge badge-danger" (click)="deleteData(data.id)" style="cursor:pointer;margin:3px">
+                    <i class="fa fa-trash"></i>
+                  </span>
+                  <span class="badge badge-success" data-toggle="modal" (click)="primaryModal.show()" (click)="Edit(data.id)" style="cursor:pointer;margin:3px">
+                    <i class="fa fa-pencil"></i>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+           
+          </table>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+
+    <div bsModal #primaryModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Data</h4>
+            <button type="button" class="close" (click)="primaryModal.hide()" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div *ngFor="let item of dataSelect">
+            <div class="card-body">
+              <div class="form-group col-sm-10">
+                <label for="ID">ID</label>
+                <input type="text" class="form-control" #id value="{{item.id}}" disabled>
+              </div>
+              <div class="form-group col-sm-10">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" #title value="{{item.title}}">
+              </div>
+              <div class="form-group col-sm-10">
+                <label for="author">Author</label>
+                <input type="text" class="form-control" #author value="{{item.author}}">
+              </div>
+              <div class="form-group col-sm-10">
+                <label for="DP">Date Published</label>
+                <input type="text" class="form-control" #DP value="{{item.date_published}}">
+              </div>
+              <div class="form-group col-sm-10">
+                <label for="NP">Number Of Page</label>
+                <input type="text" class="form-control" #NP value="{{item.number_of_page}}">
+              </div>
+              <div class="form-group col-sm-10">
+                <label for="TP">Type Of Page</label>
+                <div class="form-group row">
+                  <div class="col-md-12">
+                    <select id="select1" name="select1" #TP class="form-control">
+                      <option value="{{item.type_of_page}}">{{item.type_of_page}}</option>
+                      <option value="Novel">Novel</option>
+                      <option value="Resep Masakan">Resep Masakan</option>
+                      <option value="Olahraga">Olahraga</option>
+                      <option value="IT">IT</option>
+                      <option value="Religion">Religion</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="primaryModal.hide()">Cancle</button>
+              <button type="button" class="btn btn-primary" (click)="primaryModal.hide()" (click)="ChangeData(id.value, title.value, author.value, DP.value, NP.value, TP.value)">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- create -->
+    <div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-success" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Create Data</h4>
+            <button type="button" class="close" (click)="successModal.hide()" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="ID">ID</label>
+                <input type="text" class="form-control" #id value={{params}}>
+              </div>
+              <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" #title value={{params}}>
+              </div>
+              <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" class="form-control" #author value={{params}}>
+              </div>
+              <div class="row">
+                <div class="form-group col-sm-8">
+                  <label for="DP">Date Published</label>
+                  <input type="text" class="form-control" #DP value={{params}} placeholder="yyyy-mm-dd">
+
+                </div>
+                <div class="form-group col-sm-8">
+                  <label for="NP">Number Of Page</label>
+                  <input type="text" class="form-control" #NP value={{params}}>
+                </div>
+                <div class="form-group col-sm-8">
+                  <label for="TP">Type Of Page</label>
+                  <div class="form-group row">
+                    <div class="col-md-12">
+                      <select id="select1" name="select1" #TP class="form-control">
+                        <option value="0">Please select</option>
+                        <option value="Novel">Novel</option>
+                        <option value="Resep Masakan">Resep Masakan</option>
+                        <option value="Olahraga">Olahraga</option>
+                        <option value="IT">IT</option>
+                        <option value="Religion">Religion</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="successModal.hide()">Cancle</button>
+              <button type="button" class="btn btn-primary" (click)="successModal.hide()" (click)="CreateData(id.value, title.value, author.value, DP.value, NP.value, TP.value)">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- create -->
+  </div>
+</div>
